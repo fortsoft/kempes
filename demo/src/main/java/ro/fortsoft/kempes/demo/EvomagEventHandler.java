@@ -12,6 +12,8 @@
  */
 package ro.fortsoft.kempes.demo;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.fortsoft.kempes.RandomDelay;
@@ -21,7 +23,13 @@ import ro.fortsoft.kempes.event.EventBusFactory;
 import ro.fortsoft.kempes.ecommerce.event.ProductUrlEvent;
 import ro.fortsoft.kempes.event.Subscribe;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,6 +38,10 @@ import java.util.Set;
 public class EvomagEventHandler {
 
     private static final Logger log = LoggerFactory.getLogger(EvomagEventHandler.class);
+
+    private static final String CSV_FILE = "products.csv";
+
+    private CSVPrinter csvPrinter;
 
     @Subscribe
     public void onCategoryUrl(CategoryUrlEvent event) {
@@ -48,7 +60,14 @@ public class EvomagEventHandler {
         String productUrl = event.getUrl();
         Product product = parseProduct(productUrl);
         log.debug("Extracted '{}' from '{}'", product, productUrl);
-        // save in database or do something else
+
+        // save in csv, database or do something else
+        log.debug("Write '{}' to '{}'", product, CSV_FILE);
+        try {
+            writeToCsv(product);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 
     private Set<String> parseProductUrls(String categoryUrl) {
@@ -71,6 +90,23 @@ public class EvomagEventHandler {
             log.error(e.getMessage(), e);
             return null;
         }
+    }
+
+    private void writeToCsv(Product product) throws IOException {
+        // TODO improve
+        if (csvPrinter == null) {
+            CSVFormat csvFormat = CSVFormat.RFC4180.withHeader().withDelimiter(',');
+            csvPrinter = new CSVPrinter(new FileWriter(CSV_FILE), csvFormat.withDelimiter('#'));
+            csvPrinter.printRecord("Name", "Price");
+        }
+
+        List<String> data = new ArrayList<String>();
+        data.add(product.getName());
+        data.add(String.valueOf(product.getPrice()));
+        csvPrinter.printRecord(data);
+        csvPrinter.flush();
+        // TODO
+//        csvPrinter.close();
     }
 
 }
