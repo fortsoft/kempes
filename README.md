@@ -1,13 +1,13 @@
-Web Scraper in java
+Web Scraper in Java
 =====================
-It's a tiny web scraper in Java. It's event driven (it comes with a very simple event bus) and can be used (and this is
-the first goal) in distributed environment.
-See Test.java for a demo. 
+It's an open source (Apache license) tiny (around 20KB) web scraper in Java, with minimal dependencies and a quick learning curve.   
+It's event driven (it comes with a very simple event bus) and can be used (and this is the first goal) in distributed environment.   
 
 Components
 -------------------
 - **WebScraper** is ...
 - **WebPageFetcher** is ...
+- **WebPage** is ...
 - **EntityMapper** is ...
 - **EntityExtractor** is ...
 
@@ -43,8 +43,8 @@ public static void main(String[] args) {
 }
 ```     
 
-I you start the application with `-Dkempes.fetcher.diskCache` than all downloaded pages are stored on disk (for caching) 
-in filder 'sites'.
+If you start the application with `-Dkempes.fetcher.diskCache` than all downloaded pages are stored on disk (for caching) 
+in folder 'sites'.
 
 How to build
 -------------------
@@ -60,6 +60,16 @@ Steps:
 
 After above steps a folder _kempes/target_ is created and all goodies are in that folder.
 
+Demo
+-------------------
+I have a tiny demo application that parse a products category (tablets) from an ecommerce site. 
+The demo application is in demo module.
+To run the demo application use:  
+ 
+    mvn clean install
+    cd demo
+    mvn exec:java
+    
 Mailing list
 --------------
 Much of the conversation between developers and users is managed through [mailing list] (http://groups.google.com/group/kempes).

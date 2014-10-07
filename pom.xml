@@ -14,7 +14,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Kempes</name>
+    <name>Kempes Parent</name>
     <description>Tiny scraper in java</description>
 
     <licenses>
