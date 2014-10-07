@@ -22,18 +22,9 @@ import ro.fortsoft.kempes.WebScraper;
 public class Demo {
 
 	public static void main(String[] args) {
-        // uncomment this line if you use a proxy
-        setProxy();
-
         WebScraper scraper = new EvomagScraper("tablete");
         scraper.init();
         scraper.start();
-    }
-
-    private static void setProxy() {
-        // HTTP/HTTPS Proxy
-        System.setProperty("http.proxyHost", "192.168.16.1");
-        System.setProperty("http.proxyPort", "128");
     }
 
 }
